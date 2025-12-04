@@ -1,0 +1,270 @@
+CLASE PERSONA
+public class Persona{
+    private int id;
+    private String nombre;
+    private String telefono;
+    private String email;
+
+    public Persona(int id, String nombre, String telefono, String email) {
+        this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+
+
+CLASE PACIENTE
+public class Paciente extends Persona{
+    private String expediente;
+    private String tipoSeguro;
+
+    public Paciente(int id, String nombre, String telefono, String email, String expediente, String tipoSeguro) {
+        super(id, nombre, telefono, email);
+        this.expediente = expediente;
+        this.tipoSeguro = tipoSeguro;
+
+    }
+
+    public String getExpediente() {
+        return expediente;
+    }
+
+    public void setExpediente(String expediente) {
+        this.expediente = expediente;
+    }
+
+    public String getTipoSeguro() {
+        return tipoSeguro;
+    }
+
+    public void setTipoSeguro(String tipoSeguro) {
+        this.tipoSeguro = tipoSeguro;
+    }
+    
+    
+    @Override
+    public String toString() {
+        return "id: " + getId() + ", nombre: " + getNombre() +  ", expediente: " + expediente + ", seguro: " + tipoSeguro;
+    }
+
+
+    
+}
+
+
+
+CLASE MEDICO
+public class Medico extends Persona {
+    private String especialidad; 
+    private String cedula;
+
+    
+
+    public Medico(int id, String nombre, String telefono, String email, String especialidad, String cedula) {
+        super(id, nombre, telefono, email);
+        this.especialidad = especialidad;
+        this.cedula = cedula;
+    }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + getId() + ", nombre: " + getNombre() +  ", especialidad: " + especialidad + ", cedula: " + cedula;
+    }
+ 
+}
+
+
+CLASE CITA
+import java.time.LocalDate;
+
+abstract class Cita {
+    private int id;
+    private Paciente paciente;
+    private LocalDate fecha;
+    private String hora;
+    private Medico medico;
+    private String estado;
+
+    public Cita(int id, Paciente paciente, LocalDate fecha, String hora, Medico medico, String estado) {
+        this.id = id;
+        this.paciente = paciente;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.medico = medico;
+        this.estado = "programada";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public abstract double calcularCosto();
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", Paciente: " + paciente.getNombre() + ", Fecha: " + fecha + 
+        ", Hora: " + hora +  ", Médico: " + medico.getNombre() + ", Estado: " + estado;
+    }
+}
+
+
+
+CLASE CITAGENERAL
+import java.time.LocalDate;
+
+public class CitaGeneral extends Cita {
+    private static final double costo = 200.00;
+
+    public CitaGeneral(int id, Paciente paciente, LocalDate fecha, String hora, Medico medico, String estado) {
+        super(id, paciente, fecha, hora, medico, estado);
+    }
+    
+    @Override
+    public double calcularCosto() {
+        return costo;
+    }
+    
+    
+}
+
+
+
+CLASE ESPECIALIDAD
+import java.time.LocalDate;
+
+public class Especialidad extends Cita {
+    private static final double costo = 400.00;
+    public Especialidad(int id, Paciente paciente, LocalDate fecha, String hora, Medico medico, String estado) {
+        super(id, paciente, fecha, hora, medico, estado);
+    }
+    
+
+    @Override
+    public double calcularCosto() {
+        return costo;
+    }
+}
+
+
+
+CLASE URGENCIAS
+import java.time.LocalDate;
+
+public class Urgencias extends Cita {
+    private static final double costo = 700.00;
+    private boolean prioritaria;
+
+    public Urgencias(boolean prioritaria, int id, Paciente paciente, LocalDate fecha, String hora, Medico medico, String estado) {
+        super(id, paciente, fecha, hora, medico, estado);
+        this.prioritaria = prioritaria;
+    }
+
+    public boolean isPrioritaria() {
+        return prioritaria;
+    }
+
+    public void setPrioritaria(boolean prioritaria) {
+        this.prioritaria = prioritaria;
+    }
+
+
+    @Override
+    public double calcularCosto() {
+        return costo;
+    }
+
+    
+}
